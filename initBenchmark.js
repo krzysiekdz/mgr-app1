@@ -1,5 +1,5 @@
 var addbench = require('./benchmarks/add');
-var names = require('./names');
+var names = require('./names/names');
 
 var add = names.benchmarks.add;
 

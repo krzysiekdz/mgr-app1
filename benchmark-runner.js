@@ -2,7 +2,7 @@ var util = require('./util');
 var run = require('./runBenchmark');
 var init = require('./initBenchmark');
 var logs = require('./logWorker');
-var names = require('./names');
+var names = require('./names/names');
 
 
 function runAll(frameworks, benchmarks) {

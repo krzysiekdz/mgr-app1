@@ -1,5 +1,6 @@
 var webdriver = require('selenium-webdriver');
 var fs = require('fs');
+var path = require('path');
 
 var logCache = [];
 logCache.find = function(frm, bench) {
@@ -54,6 +55,7 @@ function saveTraces() {
 	for(var i = 0; i < logCache.length; i++) {
 		var log = logCache[i];
 		var fileName = 'traces/' + log.framework + '/' + log.benchmark + '.json';
+		ensureDirname(fileName);
 
 		(function(fn){
 			fs.writeFile(fn, JSON.stringify(log.logs), { encoding: "utf8" }, (err) => {
@@ -64,6 +66,13 @@ function saveTraces() {
 			});
 		})(fileName);
 	}
+}
+
+function ensureDirname(fileName) {
+	var dirname = path.dirname(fileName);//returns directory name, that is traces/framework_name
+	if(!fs.existsSync(dirname)) {
+		fs.mkdirSync(dirname);
+	} 
 }
 
 

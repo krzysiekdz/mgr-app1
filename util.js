@@ -6,15 +6,14 @@ var util = {};
 module.exports = util;
 
 util.forPromises = function (start, end, fn) {//fn - some function which returns a promise
-	let res = [];
+    if(start >= end)
+        return new Promise((resolve, reject) => {resolve()});//if 0 iterations for promises, then return empty promise
+
     let p = fn(start);
     for (let i = start + 1; i < end; i++) {
-        p = p.then(val => { res.push(val); return fn(i); });
+        p = p.then(() => fn(i));
     }
-    return p.then((val) => {
-        res.push(val);
-        return res;
-    });
+    return p;
 };
 
 // util.getDriver = function() {
@@ -63,8 +62,8 @@ util.getChromeDriver = function() {
 
 //--------------------- config
 util.config = {
-	TEST_COUNT: 4,    //how many repeats of each benchmark
+	TEST_COUNT: 1,    //how many repeats of each benchmark
 	TIMEOUT: 5 * 1000, //timeout for waiting on test end
-	REJECT_COUNT: 2,  //how many from TEST_COUNT samples we will reject because they are the worst results
     TEST_PERIOD: 0,  //how much time wait from one test click to another one (clicking time)
+    WARMUP_ITERATIONS: 0,
 };

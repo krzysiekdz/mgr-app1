@@ -3,17 +3,36 @@ var names = {};
 module.exports = names;
 names.benchmarks = {};
 
+//categories of benchmarks
+names.benchmarks.categories = {};
+names.benchmarks.categories.add = {name: 'add', sort_index: 0};
+names.benchmarks.categories.update = {name: 'update', sort_index: 1};
+names.benchmarks.categories.replace = {name: 'replace', sort_index: 2};
+names.benchmarks.categories.swap = {name: 'swap', sort_index: 3};
+names.benchmarks.categories.all = [
+	names.benchmarks.categories.add,
+	names.benchmarks.categories.update,
+	names.benchmarks.categories.replace,
+	names.benchmarks.categories.swap,
+];
+
 //add
 names.benchmarks.add = {};
 
-names.benchmarks.add._500 = 'add_500';
-names.benchmarks.add._1k = 'add_1k'; 			
-names.benchmarks.add._2k =	'add_2k'; 			
-names.benchmarks.add._500f_500 =	'add_500f_500';
-names.benchmarks.add._500f_2k =	'add_500f_2k';		
-names.benchmarks.add._500f_1k =	'add_500f_1k';		
-names.benchmarks.add._500m_1k =	'add_500m_1k';		
-names.benchmarks.add._500L_1k =	'add_500L_1k';		
+names.benchmarks.add._500 = {name:'add_500', sort_index:100};
+names.benchmarks.add._1k = {name: 'add_1k', sort_index:101}; 			
+names.benchmarks.add._2k =	{name:'add_2k', sort_index:102}; 			
+names.benchmarks.add._500f_500 =	{name: 'add_500f_500', sort_index:103};
+names.benchmarks.add._500f_2k =	{name: 'add_500f_2k', sort_index:104};		
+names.benchmarks.add._500f_1k =	{name: 'add_500f_1k', sort_index:105};		
+names.benchmarks.add._500m_1k =	{name: 'add_500m_1k', sort_index:106};		
+names.benchmarks.add._500L_1k =	{name: 'add_500L_1k', sort_index:107};		
+names.benchmarks.add._500f_3k =	{name: 'add_500f_3k', sort_index:108};	
+names.benchmarks.add._500f_4k =	{name: 'add_500f_4k', sort_index:109};	
+names.benchmarks.add._1f_1k =	{name: 'add_1f_1k', sort_index:110};	
+names.benchmarks.add._1L_1k =	{name: 'add_1L_1k', sort_index:111};	
+names.benchmarks.add._2f_1k =	{name: 'add_2f_1k', sort_index:112};	
+names.benchmarks.add._2L_1k =	{name: 'add_2L_1k', sort_index:113};	
 
 names.benchmarks.add.all = [
 	names.benchmarks.add._500 ,			//0
@@ -23,7 +42,13 @@ names.benchmarks.add.all = [
 	names.benchmarks.add._500f_2k ,		//4
 	names.benchmarks.add._500f_1k ,		//5
 	names.benchmarks.add._500m_1k ,		//6
-	names.benchmarks.add._500L_1k 		//7
+	names.benchmarks.add._500L_1k, 		//7
+	names.benchmarks.add._500f_3k, 		//8
+	names.benchmarks.add._500f_4k, 		//9
+	names.benchmarks.add._1f_1k, 		//10
+	names.benchmarks.add._1L_1k, 		//11
+	names.benchmarks.add._2f_1k, 		//12
+	names.benchmarks.add._2L_1k, 		//13
 ];
 
 
@@ -39,10 +64,10 @@ names.benchmarks.replace = [
 ];
 
 names.frameworks = [
-	'vanilla-js',
-	'vanilla-js-keyed',
-	'angular-v1.6',
-	'angular-v1.6-keyed',
+	{name: 'vanilla-js', sort_index: 0},
+	{name: 'vanilla-js-keyed', sort_index: 1},
+	{name: 'angular-v1.6', sort_index: 2},
+	{name: 'angular-v1.6-keyed', sort_index: 3},
 	// 'react-js',
 	// 'angular-2',
 	// 'angular-2-keyed',
@@ -78,11 +103,11 @@ names.prepare = function(toRun) {
 
 //names for testing - benchamrks and frameworks
 var toRun = {
-	add: [0,1,2,3,4,5,6,7], 
+	add: [10,11], 
 	replace: [], 
 	swap:[], 
 	all:false,
-	frameworks: [0,1,2,3]
+	frameworks: [0]
 };
 
 names.prepare(toRun);

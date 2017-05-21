@@ -2,6 +2,7 @@ var webdriver = require('selenium-webdriver'),
 	By = webdriver.By;
 
 var util = require('../util');
+var bind = require('../bindings');
 
 
 //------------------- core functions
@@ -12,6 +13,15 @@ function initField(driver, field, value) {
 
 	return driver.wait(function() {
 		return driver.findElement(By.name(field)).getAttribute('value').then((val)=> {return val === value + '';});
+	}, util.config.TIMEOUT);
+}
+
+exports.clearTable = clearTable;
+function clearTable(driver) {
+	driver.findElement(By.name(bind.btn.clear)).click();	
+
+	return driver.wait(function() {
+		return driver.findElements(By.xpath('//tbody/tr')).then(els => {return els.length === 0;});
 	}, util.config.TIMEOUT);
 }
 

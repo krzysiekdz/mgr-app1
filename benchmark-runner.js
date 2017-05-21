@@ -11,12 +11,11 @@ function runAll(frameworks, benchmarks) {
 	frameworks.forEach(frm => {
 		benchmarks.forEach(bench => {
 			tests.push({
-				framework: frm,
-				benchmark: bench,
+				framework: frm.name,
+				benchmark: bench.name,
 			});
 		});
 	});
-
 
 	util.forPromises(0, tests.length, function(i) { //for every framework and bench in there....
 		let driver = util.getChromeDriver();
@@ -27,7 +26,6 @@ function runAll(frameworks, benchmarks) {
 		return util.forPromises(0, util.config.TEST_COUNT, function() {//for every bench repeat it TEST_COUNT times
 			return driver.get('http://localhost:8080/' + frm + '/public') //must return some promise - driver returns a promise so its ok
 				.then(() => init.initBenchmark(driver, bench))
-				.then(() => prerun.run(driver, bench))
 				.then(() => logs.clear(driver /*, notclear*/))
 				.then(() => run.runBenchmark(driver, bench))
 				.then(() => logs.read(driver, frm, bench))

@@ -13,14 +13,27 @@ var testPeriod = util.config.TEST_PERIOD;
 
 exports.initAdd = initAdd;
 function initAdd(driver, value) {
-	return core.initField(driver, bind.input.add, value);
+	return core.initField(driver, bind.input.add, value)
+		.then(() => {//warmup iterations
+			return util.forPromises(0, util.config.WARMUP_ITERATIONS, function() {
+				return add(driver, value)
+					.then(() => core.clearTable(driver));
+			});
+		});
 }
 
 exports.initAddXtoY = initAddXtoY;
-function initAddXtoY(driver, x, y) {
+function initAddXtoY(driver, x, y, method) {
 	return core.initField(driver, bind.input.add, x)
 		.then(()=> core.initField(driver, bind.input.init, y))
-		.then(()=> initElements(driver, y));
+		.then(()=> initElements(driver, y))
+		.then(() => {//warmup iterations
+			return util.forPromises(0, util.config.WARMUP_ITERATIONS, function() {
+				return addXtoY(driver, method, x, y)
+					.then(() => core.clearTable(driver))
+					.then(()=> initElements(driver, y));
+			});
+		});
 }
 
 function initElements(driver, value) {

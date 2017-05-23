@@ -32,7 +32,7 @@ var toRun = {
 	clear: [],
 	update: [],
 	replace: [], 
-	swap:[], 
+	swap:[1,2], 
 	fetch: [],
 	load: [],
 	input: [],

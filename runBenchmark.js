@@ -2,12 +2,14 @@ var addbench = require('./benchmarks/add');
 var update_bench = require('./benchmarks/update');
 var repl_bench = require('./benchmarks/replace');
 var clear_bench = require('./benchmarks/clear');
+var swap_bench = require('./benchmarks/swap');
 
 var names = require('./names/names');
 var add = names.benchmarks.add;
 var update = names.benchmarks.update;
 var replace = names.benchmarks.replace;
 var clear = names.benchmarks.clear;
+var swap = names.benchmarks.swap;
 
 
 exports.runBenchmark = runBenchmark;
@@ -168,6 +170,17 @@ function runBenchmark(driver, benchmark) {
 			return repl_bench.replace(driver, 'First', 500, 4000);
 		}
 
+
+		//swap cases
+		case swap._2k_f.name : {
+			return swap_bench.swap(driver, 'First', 2000);
+		}
+		case swap._2k_L.name : {
+			return swap_bench.swap(driver, 'Last', 2000);
+		}
+		case swap._4k_f.name : {
+			return swap_bench.swap(driver, 'First', 4000);
+		}
 		
 		// case 'select' : {
 		// 	return benchmarks.select(driver);

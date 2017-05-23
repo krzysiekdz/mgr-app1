@@ -23,7 +23,7 @@ bind.btn.updateLast = 'updateLast';
 bind.btn.updateEvery = 'updateEvery';
 
 bind.input.update = 'input-update';
-bind.input.update_every = 'input-update-every';
+bind.input.updateEvery = 'input-update-every';
 
 //replace
 bind.btn.replaceFirst = 'replaceFirst';

@@ -97,6 +97,16 @@ function runBenchmark(driver, benchmark) {
 			return update_bench.update(driver, 'First', 500, 4000);
 		}
 
+		case update.partial_evr2_1k.name : {
+			return update_bench.partialUpdate(driver, 2, 1000);
+		}
+		case update.partial_evr3_1_5k.name : {
+			return update_bench.partialUpdate(driver, 3, 1500);
+		}
+		case update.partial_evr4_2k.name : {
+			return update_bench.partialUpdate(driver, 4, 2000);
+		}
+
 		// case 'replace1000' : {
 		// 	return benchmarks.replace1(driver);
 		// }

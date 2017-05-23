@@ -30,7 +30,7 @@ require('./prepare');
 var toRun = {
 	add: [], 
 	clear: [],
-	update: [3,4,5],
+	update: [14,15,16],
 	replace: [], 
 	swap:[], 
 	fetch: [],
@@ -42,7 +42,7 @@ var toRun = {
 	memory: [],
 	all_benchmarks:false,
 	all_frameworks: false,
-	frameworks: [0,2]
+	frameworks: [0]
 };
 
 //preparing test cases; test names goes to benchmarksToRun and frameworksToRun

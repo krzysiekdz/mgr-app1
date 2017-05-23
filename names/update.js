@@ -21,10 +21,6 @@ names.benchmarks.update.partial_evr2_1k =	{name: 'update_partial_evr2_1k', sort_
 names.benchmarks.update.partial_evr3_1_5k =	{name: 'update_partial_evr3_1_5k', sort_index:315};	
 names.benchmarks.update.partial_evr4_2k =	{name: 'update_partial_evr4_2k', sort_index:316};	
 
-names.benchmarks.update._1k_slow = {name: 'update_1k_slow', sort_index:302.1}; 			
-names.benchmarks.update._2k_slow =	{name:'update_2k_slow', sort_index:302.2}; 	
-
-
 names.benchmarks.update.all = [
 	names.benchmarks.update._500,				//0
 	names.benchmarks.update._1k,				//1
@@ -44,7 +40,4 @@ names.benchmarks.update.all = [
 	names.benchmarks.update.partial_evr2_1k,		//14
 	names.benchmarks.update.partial_evr3_1_5k,		//15
 	names.benchmarks.update.partial_evr4_2k,		//16
-
-	names.benchmarks.update._1k_slow,				//17
-	names.benchmarks.update._2k_slow,				//18
 ];

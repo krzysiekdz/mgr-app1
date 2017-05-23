@@ -1,3 +1,6 @@
 names - podzial na pliki
 jeden glowny names ktory robi export - tylko z niego moge pobierac potem w innych plikach zmienna names i z niej nazwy, np nie zrobie require(/names/add) zeby pobrac nazwy dla add, bo wszystko jest w zmiennej names i tylko do niej wystarczy sie odwolac; pliki pozostale (np add, replace) nie czynia zadnych eksportow; ich wywolanie nastepuje tylko w pliku names i jest za pomoca require() co oznacza zaladowanie kodu w nich zawartego, a wiec dopisanie kolejnych nazw do zmiennej names
 require w pliku names oznaczaja tyle, ze wykonuje kod , ktory jest zawarty w dolaczanym pliku; a w tym dolaczanym pliku eksportuje z kolei zmienna, do ktorej dopisuje pewne obiekty
+
+set timeout daje ciekawą opcję - wymusza czekanie na test - program musi dluzej testowac za pomoca wait - jesli wiec damy za dlugi click, program powinien sie wylaczac z powodu zbyt dlugiego czasu oczekiwania; 
+miałem tez taka sytuacje, ze program oczekiwal na click, ale w wyniku zlego warunku, wait juz sie obliczyl i warunek okazal sie spelnionym - program zakonczyl sie, a click po odczekaniu 2s wykonal sie, ale nie bylo juz instancji driver - zgloszony zostal blad w konsoli

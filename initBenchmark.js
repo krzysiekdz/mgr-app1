@@ -1,7 +1,9 @@
 var addbench = require('./benchmarks/add');
+var update_bench = require('./benchmarks/update');
 var names = require('./names/names');
 
 var add = names.benchmarks.add;
+var update = names.benchmarks.update;
 
 exports.initBenchmark = initBenchmark;
 function initBenchmark(driver, benchmark) {
@@ -48,6 +50,50 @@ function initBenchmark(driver, benchmark) {
 		}
 		case add._2L_1k.name : {
 			return addbench.initAddXtoY(driver, 2, 1000, 'Last');
+		}
+
+		//update cases:
+		case update._500.name : {
+			return update_bench.initUpdate(driver, 'First', 500, 500);
+		}
+		case update._1k.name : {
+			return update_bench.initUpdate(driver, 'First', 1000, 1000);
+		}
+		case update._2k.name : {
+			return update_bench.initUpdate(driver, 'First', 2000, 2000);
+		}
+		case update._500f_1_5k.name : {
+			return update_bench.initUpdate(driver, 'First', 500, 1500);
+		}
+		case update._500m_1_5k.name : {
+			return update_bench.initUpdate(driver, 'Mid', 500, 1500);
+		}
+		case update._500L_1_5k.name : {
+			return update_bench.initUpdate(driver, 'Last', 500, 1500);
+		}
+		case update._500f_1k.name : {
+			return update_bench.initUpdate(driver, 'First', 500, 1000);
+		}
+		case update._500f_2k.name : {
+			return update_bench.initUpdate(driver, 'First', 500, 2000);
+		}
+		case update._1f_1k.name : {
+			return update_bench.initUpdate(driver, 'First', 1, 1000);
+		}
+		case update._2f_1k.name : {
+			return update_bench.initUpdate(driver, 'First', 2, 1000);
+		}
+		case update._1f_2k.name : {
+			return update_bench.initUpdate(driver, 'First', 1, 2000);
+		}
+		case update._1L_2k.name : {
+			return update_bench.initUpdate(driver, 'Last', 1, 2000);
+		}
+		case update._500f_3k.name : {
+			return update_bench.initUpdate(driver, 'First', 500, 3000);
+		}
+		case update._500f_4k.name : {
+			return update_bench.initUpdate(driver, 'First', 500, 4000);
 		}
 
 		// case 'mem-load' : {

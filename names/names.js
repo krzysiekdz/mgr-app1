@@ -28,9 +28,9 @@ require('./prepare');
 
 //names for testing - benchamrks and frameworks
 var toRun = {
-	add: [0], 
+	add: [], 
 	clear: [],
-	update: [],
+	update: [3,4,5],
 	replace: [], 
 	swap:[], 
 	fetch: [],
@@ -42,7 +42,7 @@ var toRun = {
 	memory: [],
 	all_benchmarks:false,
 	all_frameworks: false,
-	frameworks: [0]
+	frameworks: [0,2]
 };
 
 //preparing test cases; test names goes to benchmarksToRun and frameworksToRun

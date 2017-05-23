@@ -11,72 +11,56 @@ var testPeriod = util.config.TEST_PERIOD;
 
 //----------------------- init functions
 
-exports.initAdd = initAdd;
-function initAdd(driver, value) {
-	return core.initField(driver, bind.input.add, value)
+exports.initUpdate = initUpdate;
+function initUpdate(driver, method, x, y) {
+	return core.initField(driver, bind.input.update, x)
+		.then(() => core.initField(driver, bind.input.init, y))
+		.then(() => core.initElements(driver, y))
 		.then(() => {//warmup iterations
 			return util.forPromises(0, util.config.WARMUP_ITERATIONS, function() {
-				return add(driver, value)
-					.then(() => core.clearTable(driver));
+				return update(driver, method, x, y);
 			});
 		});
 }
 
-exports.initAddXtoY = initAddXtoY;
-function initAddXtoY(driver, x, y, method) {
-	return core.initField(driver, bind.input.add, x)
-		.then(()=> core.initField(driver, bind.input.init, y))
-		.then(()=> initElements(driver, y))
-		.then(() => {//warmup iterations
-			return util.forPromises(0, util.config.WARMUP_ITERATIONS, function() {
-				return addXtoY(driver, method, x, y)
-					.then(() => core.clearTable(driver))
-					.then(()=> initElements(driver, y));
-			});
-		});
-}
-
-function initElements(driver, value) {
-	driver.findElement(By.name(bind.btn.init)).click();
-	
-	return driver.wait(function() {//waiting until the page will render
-		return driver.findElement(By.xpath('//tbody/tr[' +  value +']')).then(el => {return true;}, ()=>{});
-	}, util.config.TIMEOUT);
-}
 
 
 // ----------------- benchmark's functions
 
+exports.update = update;
+function update(driver, method, x, y) { //method= "First" | "Mid" | "Last"
+	var btn = bind.btn.updateFirst;
+	var last_element = x; //for First metod
 
-exports.add = add;
-function add(driver, value) {
-	setTimeout(function() {
-		driver.findElement(By.name(bind.btn.addFirst)).click();
-	}, testPeriod);
-	
-	return driver.wait(function() {//waiting until the page will render
-		return driver.findElement(By.xpath('//tbody/tr[' +  value +']')).then(el => {return true;}, ()=>{}
-			 // err => console.log('error while testing "add": ', err.toString())
-		);
-	}, util.config.TIMEOUT);
-}
-
-exports.addXtoY = addXtoY;
-function addXtoY(driver, method, x, y) { //method= "First" | "Mid" | "Last"
-	var btn = bind.btn.addFirst;
-	if(method === 'Mid')
-		btn = bind.btn.addMid;
-	else if(method === 'Last') 
-		btn = bind.btn.addLast;
+	if(method === 'Mid') {
+		btn = bind.btn.updateMid;
+		last_element = Math.floor(y/2) + Math.ceil(x/2); //for y odd and even, there is the same rule
+	}
+	else if(method === 'Last') {
+		btn = bind.btn.updateLast;
+		last_element = y;
+	}
 
 	setTimeout(function() {
 		driver.findElement(By.name(btn)).click();
 	}, testPeriod);
 	
-	var value = x + y;
+	
+	var firstCall = true, html_before; //html of last_element must be diffrent before click and after it (at least at ID position)
+
 	return driver.wait(function() {//waiting until the page will render
-		return driver.findElement(By.xpath('//tbody/tr[' +  value +']')).then(el => {return true;}, ()=>{});
+		if(firstCall) {
+			firstCall = false;
+			return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+				.getAttribute('innerHTML')
+				.then(html => {html_before = html; return false;}, (err)=>{console.log('error:', err)})
+		} else {
+			return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+				.getAttribute('innerHTML')
+				.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)})
+		}
 	}, util.config.TIMEOUT);
 }
+
 
 

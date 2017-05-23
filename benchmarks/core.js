@@ -25,5 +25,15 @@ function clearTable(driver) {
 	}, util.config.TIMEOUT);
 }
 
+exports.initElements = initElements;
+function initElements(driver, value) {
+	//sprawdzic czy zadziala gdy dopisze tutaj odrazu inicjowanie pole input init
+	driver.findElement(By.name(bind.btn.init)).click();
+	
+	return driver.wait(function() {//waiting until the page will render
+		return driver.findElement(By.xpath('//tbody/tr[' +  value +']')).then(el => {return true;}, ()=>{});
+	}, util.config.TIMEOUT);
+}
+
 
 

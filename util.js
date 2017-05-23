@@ -64,6 +64,6 @@ util.getChromeDriver = function() {
 util.config = {
 	TEST_COUNT: 1,    //how many repeats of each benchmark
 	TIMEOUT: 5 * 1000, //timeout for waiting on test end
-    TEST_PERIOD: 0,  //how much time wait from one test click to another one (clicking time)
-    WARMUP_ITERATIONS: 0,
+    TEST_PERIOD: 2000,  //how much time wait from one test click to another one (clicking time)
+    WARMUP_ITERATIONS: 1,
 };

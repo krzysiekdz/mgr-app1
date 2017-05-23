@@ -30,7 +30,7 @@ require('./prepare');
 var toRun = {
 	add: [], 
 	clear: [],
-	update: [14,15,16],
+	update: [],
 	replace: [], 
 	swap:[], 
 	fetch: [],

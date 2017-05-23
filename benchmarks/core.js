@@ -35,5 +35,17 @@ function initElements(driver, value) {
 	}, util.config.TIMEOUT);
 }
 
+exports.clearTableDelayed = clearTableDelayed;
+function clearTableDelayed(driver) {
+	setTimeout(function() {
+		driver.findElement(By.name(bind.btn.clear)).click();	
+	}, util.config.TEST_PERIOD);
+	
+
+	return driver.wait(function() {
+		return driver.findElements(By.xpath('//tbody/tr')).then(els => {return els.length === 0;});
+	}, util.config.TIMEOUT);
+}
+
 
 

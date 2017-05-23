@@ -1,9 +1,14 @@
 var addbench = require('./benchmarks/add');
 var update_bench = require('./benchmarks/update');
-var names = require('./names/names');
+var repl_bench = require('./benchmarks/replace');
+var clear_bench = require('./benchmarks/clear');
 
+var names = require('./names/names');
 var add = names.benchmarks.add;
 var update = names.benchmarks.update;
+var replace = names.benchmarks.replace;
+var clear = names.benchmarks.clear;
+
 
 exports.initBenchmark = initBenchmark;
 function initBenchmark(driver, benchmark) {
@@ -50,6 +55,17 @@ function initBenchmark(driver, benchmark) {
 		}
 		case add._2L_1k.name : {
 			return addbench.initAddXtoY(driver, 2, 1000, 'Last');
+		}
+
+		//clear cases:
+		case clear._500.name : {
+			return clear_bench.initClear(driver, 500);
+		}
+		case clear._1k.name : {
+			return clear_bench.initClear(driver, 1000);
+		}
+		case clear._2k.name : {
+			return clear_bench.initClear(driver, 2000);
 		}
 
 		//update cases:
@@ -106,6 +122,50 @@ function initBenchmark(driver, benchmark) {
 			return update_bench.initPartialUpdate(driver, 4, 2000);
 		}
 
+
+		//replace cases:
+		case replace._500.name : {
+			return repl_bench.initReplace(driver, 'First', 500, 500);
+		}
+		case replace._1k.name : {
+			return repl_bench.initReplace(driver, 'First', 1000, 1000);
+		}
+		case replace._2k.name : {
+			return repl_bench.initReplace(driver, 'First', 2000, 2000);
+		}
+		case replace._500f_1_5k.name : {
+			return repl_bench.initReplace(driver, 'First', 500, 1500);
+		}
+		case replace._500m_1_5k.name : {
+			return repl_bench.initReplace(driver, 'Mid', 500, 1500);
+		}
+		case replace._500L_1_5k.name : {
+			return repl_bench.initReplace(driver, 'Last', 500, 1500);
+		}
+		case replace._500f_1k.name : {
+			return repl_bench.initReplace(driver, 'First', 500, 1000);
+		}
+		case replace._500f_2k.name : {
+			return repl_bench.initReplace(driver, 'First', 500, 2000);
+		}
+		case replace._1f_1k.name : {
+			return repl_bench.initReplace(driver, 'First', 1, 1000);
+		}
+		case replace._2f_1k.name : {
+			return repl_bench.initReplace(driver, 'First', 2, 1000);
+		}
+		case replace._1f_2k.name : {
+			return repl_bench.initReplace(driver, 'First', 1, 2000);
+		}
+		case replace._1L_2k.name : {
+			return repl_bench.initReplace(driver, 'Last', 1, 2000);
+		}
+		case replace._500f_3k.name : {
+			return repl_bench.initReplace(driver, 'First', 500, 3000);
+		}
+		case replace._500f_4k.name : {
+			return repl_bench.initReplace(driver, 'First', 500, 4000);
+		}
 		// case 'mem-load' : {
 		// 	return driver.executeScript('window.gc();');
 		// }

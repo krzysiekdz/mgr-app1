@@ -3,6 +3,13 @@ var update_bench = require('./benchmarks/update');
 var repl_bench = require('./benchmarks/replace');
 var clear_bench = require('./benchmarks/clear');
 var swap_bench = require('./benchmarks/swap');
+var fetch_bench = require('./benchmarks/fetch');
+var load_bench = require('./benchmarks/load');
+var input_bench = require('./benchmarks/input');
+// var edit_bench = require('./benchmarks/edit');
+// var filter_bench = require('./benchmarks/filter');
+// var search_bench = require('./benchmarks/search');
+// var memory_bench = require('./benchmarks/memory');
 
 var names = require('./names/names');
 var add = names.benchmarks.add;
@@ -10,10 +17,17 @@ var update = names.benchmarks.update;
 var replace = names.benchmarks.replace;
 var clear = names.benchmarks.clear;
 var swap = names.benchmarks.swap;
+var fetch = names.benchmarks.fetch;
+var load = names.benchmarks.load;
+var input = names.benchmarks.input;
+// var edit = names.benchmarks.edit;
+// var filter = names.benchmarks.filter;
+// var search = names.benchmarks.search;
+// var memory = names.benchmarks.memory;
 
 
 exports.runBenchmark = runBenchmark;
-function runBenchmark(driver, benchmark) {
+function runBenchmark(driver, benchmark, framework) {
 	switch(benchmark) {
 		//add cases:
 		case add._500.name : {
@@ -180,6 +194,27 @@ function runBenchmark(driver, benchmark) {
 		}
 		case swap._4k_f.name : {
 			return swap_bench.swap(driver, 'First', 4000);
+		}
+
+		//fetch cases:
+		case fetch._1k.name : {
+			return fetch_bench.fetch(driver, 1000);
+		}
+		case fetch._2k.name : {
+			return fetch_bench.fetch(driver, 2000);
+		}
+
+		//load case:
+		case load._.name : {
+			return load_bench.load(driver, framework);
+		}
+
+		//input cases:
+		case input._1k.name : {
+			return input_bench.input(driver, true);
+		}
+		case input._2k.name : {
+			return input_bench.input(driver, true);
 		}
 		
 		// case 'select' : {

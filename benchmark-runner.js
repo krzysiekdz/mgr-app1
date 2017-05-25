@@ -25,9 +25,9 @@ function runAll(frameworks, benchmarks) {
 
 		return util.forPromises(0, util.config.TEST_COUNT, function() {//for every bench repeat it TEST_COUNT times
 			return driver.get('http://localhost:8080/' + frm + '/public') //must return some promise - driver returns a promise so its ok
-				.then(() => init.initBenchmark(driver, bench))
+				.then(() => init.initBenchmark(driver, bench, frm))
 				.then(() => logs.clear(driver /*, notclear*/))
-				.then(() => run.runBenchmark(driver, bench))
+				.then(() => run.runBenchmark(driver, bench, frm))
 				.then(() => logs.read(driver, frm, bench))
 				;
 		})

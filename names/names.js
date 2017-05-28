@@ -16,6 +16,8 @@ require('./fetch');
 require('./load');
 require('./input');
 require('./edit');
+require('./select');
+require('./remove');
 require('./filter');
 require('./search');
 require('./memory');
@@ -35,14 +37,16 @@ var toRun = {
 	swap:[], 
 	fetch: [],
 	load: [],
-	input: [0,1],
+	input: [],
 	edit: [],
+	select: [],
+	remove: [],
 	filter: [],
 	search: [],
 	memory: [],
 	all_benchmarks:false,
 	all_frameworks: false,
-	frameworks: [0]
+	frameworks: [2]
 };
 
 //preparing test cases; test names goes to benchmarksToRun and frameworksToRun

@@ -21,12 +21,11 @@ function runAll(frameworks, benchmarks) {
 		let driver = util.getChromeDriver();
 		let frm = tests[i].framework;
 		let bench = tests[i].benchmark;
-		// let notclear = ( bench.indexOf('mem-load') > -1 ) ? true:false;
 
 		return util.forPromises(0, util.config.TEST_COUNT, function() {//for every bench repeat it TEST_COUNT times
 			return driver.get('http://localhost:8080/' + frm + '/public') //must return some promise - driver returns a promise so its ok
 				.then(() => init.initBenchmark(driver, bench, frm))
-				.then(() => logs.clear(driver /*, notclear*/))
+				.then(() => logs.clear(driver))
 				.then(() => run.runBenchmark(driver, bench, frm))
 				.then(() => logs.read(driver, frm, bench))
 				;

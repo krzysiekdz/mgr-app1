@@ -6,10 +6,12 @@ var swap_bench = require('./benchmarks/swap');
 var fetch_bench = require('./benchmarks/fetch');
 var load_bench = require('./benchmarks/load');
 var input_bench = require('./benchmarks/input');
-// var edit_bench = require('./benchmarks/edit');
-// var filter_bench = require('./benchmarks/filter');
-// var search_bench = require('./benchmarks/search');
-// var memory_bench = require('./benchmarks/memory');
+var edit_bench = require('./benchmarks/edit');
+var select_bench = require('./benchmarks/select');
+var remove_bench = require('./benchmarks/remove');
+var filter_bench = require('./benchmarks/filter');
+var search_bench = require('./benchmarks/search');
+var memory_bench = require('./benchmarks/memory');
 
 var names = require('./names/names');
 var add = names.benchmarks.add;
@@ -20,10 +22,12 @@ var swap = names.benchmarks.swap;
 var fetch = names.benchmarks.fetch;
 var load = names.benchmarks.load;
 var input = names.benchmarks.input;
-// var edit = names.benchmarks.edit;
-// var filter = names.benchmarks.filter;
-// var search = names.benchmarks.search;
-// var memory = names.benchmarks.memory;
+var edit = names.benchmarks.edit;
+var select = names.benchmarks.select;
+var remove = names.benchmarks.remove;
+var filter = names.benchmarks.filter;
+var search = names.benchmarks.search;
+var memory = names.benchmarks.memory;
 
 
 exports.runBenchmark = runBenchmark;
@@ -216,31 +220,91 @@ function runBenchmark(driver, benchmark, framework) {
 		case input._2k.name : {
 			return input_bench.input(driver, true);
 		}
+
+		//edit cases:
+		case edit._1k.name : {
+			return edit_bench.edit(driver);
+		}
+		case edit._2k.name : {
+			return edit_bench.edit(driver);
+		}
+
+		//select cases:
+		case select._1k_f.name : {
+			return select_bench.select(driver, 1000, 'First');
+		}
+		case select._1k_L.name : {
+			return select_bench.select(driver, 1000, 'Last');
+		}
+		case select._2k_f.name : {
+			return select_bench.select(driver, 2000, 'First');
+		}
+		case select._2k_L.name : {
+			return select_bench.select(driver, 2000, 'Last');
+		}
+
+		//remove cases:
+		case remove._1k_f.name : {
+			return remove_bench.remove(driver, 1000, 'First');
+		}
+		case remove._1k_L.name : {
+			return remove_bench.remove(driver, 1000, 'Last');
+		}
+		case remove._2k_f.name : {
+			return remove_bench.remove(driver, 2000, 'First');
+		}
+		case remove._2k_L.name : {
+			return remove_bench.remove(driver, 2000, 'Last');
+		}
 		
-		// case 'select' : {
-		// 	return benchmarks.select(driver);
-		// }
-		// case 'swap' : {
-		// 	return benchmarks.swap(driver);
-		// }
-		// case 'remove' : {
-		// 	return benchmarks.remove(driver);
-		// 
-		// case 'clear1000' : {
-		// 	return benchmarks.clear1(driver);
-		// }
-		// case 'clear10000' : {
-		// 	return benchmarks.clear2(driver);
-		// }
-		// case 'mem-load' : {
-		// 	return benchmarks.memLoad(driver);
-		// }
-		// case 'mem-add1000' : {
-		// 	return benchmarks.memAdd1(driver);
-		// }
-		// case 'mem-add10000' : {
-		// 	return benchmarks.memAdd2(driver);
-		// }
+		//filter cases:
+		case filter._1k.name : {
+			return filter_bench.filter(driver);
+		}
+		case filter._2k.name : {
+			return filter_bench.filter(driver);
+		}
+
+		//search cases:
+		case search._z_2k.name : {
+			return search_bench.search(driver, 'z');
+		}
+		case search._b_2k.name : {
+			return search_bench.search(driver, 'b');
+		}
+		case search._y_2k.name : {
+			return search_bench.search(driver, 'y');
+		}
+		case search._i_2k.name : {
+			return search_bench.search(driver, 'i');
+		}
+		case search._o_2k.name : {
+			return search_bench.search(driver, 'o');
+		}
+		case search._a_2k.name : {
+			return search_bench.search(driver, 'a');
+		}
+		case search._e_2k.name : {
+			return search_bench.search(driver, 'e');
+		}
+
+		//memory cases:
+		case memory._load.name : {
+			return memory_bench.memLoad(driver, framework);
+		}
+		case memory._add_1k.name : {
+			return memory_bench.memAdd(driver, 1000);
+		}
+		case memory._add_2k.name : {
+			return memory_bench.memAdd(driver, 2000);
+		}
+		case memory._add_3k.name : {
+			return memory_bench.memAdd(driver, 3000);
+		}
+		case memory._add_4k.name : {
+			return memory_bench.memAdd(driver, 4000);
+		}
+		
 	}
 }
 

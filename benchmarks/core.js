@@ -47,5 +47,18 @@ function clearTableDelayed(driver) {
 	}, util.config.TIMEOUT);
 }
 
+exports.fetch = fetch;
+function fetch(driver, count) { 
+	var btn = bind.btn.fetch_1k;
+	if(count === 2000)
+		btn = bind.btn.fetch_2k;
+
+	driver.findElement(By.name(btn)).click();
+	
+	return driver.wait(function() {//waiting until the page will render
+		return driver.findElement(By.xpath('//tbody/tr[' +  count +']')).then(el => {return true;}, ()=>{});
+	}, util.config.TIMEOUT);
+}
+
 
 

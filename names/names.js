@@ -30,7 +30,7 @@ require('./prepare');
 
 //names for testing - benchamrks and frameworks
 var toRun = {
-	add: [], 
+	add: [0], 
 	clear: [],
 	update: [],
 	replace: [], 

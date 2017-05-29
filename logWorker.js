@@ -23,7 +23,6 @@ function clear(driver, notclear) {
 			trash.push(JSON.parse(log.message).message);
 		});
 	});
-	
 }
 
 exports.read = read;
@@ -51,7 +50,7 @@ function read(driver, frm, bench) {
 
 
 exports.saveTraces = saveTraces;
-function saveTraces() {
+function saveTraces() { //saving in new trace
 	for(var i = 0; i < logCache.length; i++) {
 		var log = logCache[i];
 		var fileName = 'traces/' + log.framework + '/' + log.benchmark + '.json';
@@ -75,6 +74,37 @@ function ensureDirname(fileName) {
 	} 
 }
 
+exports.appendTraces = appendTraces;
+function appendTraces() { //appending traces
+	for(var i = 0; i < logCache.length; i++) {
+		var log = logCache[i];
+		var fileName = 'traces/' + log.framework + '/' + log.benchmark + '.json';
+		ensureDirname(fileName);
+
+		(function(fn, log){
+			fs.readFile(fn, function(err, data) {
+				if(err) {
+					if(err.errno === -4058) {//file doesnt exist
+						writeFile(fn, log.logs);
+					}
+				} else { //if file exists, append data to it
+					var arr = JSON.parse(data.toString());
+					arr = arr.concat(log.logs);
+					writeFile(fn, arr);
+				}
+			});
+		})(fileName, log);
+	}
+}
+
+function writeFile(fn, obj) {
+	fs.writeFile(fn, JSON.stringify(obj), { encoding: "utf8" }, (err) => {
+		if(err) {
+			return console.error("error while saving traces:" + fn); 
+		}
+		console.log("trace " + fn + " saved in file."); 
+	});
+}
 
 
 

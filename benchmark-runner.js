@@ -33,7 +33,7 @@ function runAll(frameworks, benchmarks) {
 		.then(() => driver.quit())
 		;
 	})
-	.then(() => logs.saveTraces())
+	.then(() => logs.appendTraces())
 	;
 }
 

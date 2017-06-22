@@ -1,3 +1,5 @@
+katalog nadrzêdny (mgr-main) : https://github.com/krzysiekdz/mgr-main
+
 App1 
 Aplikacja napisana w java script (nodejs). Odpowiada za "wyklikiwanie" testów.
 Testy mo¿na by przeprowadziæ rêcznie, ale aplikacja uczyni to szybciej i precyzyjniej.

@@ -3,11 +3,10 @@ Mgr-App1
 
 [powrót](https://github.com/krzysiekdz/mgr-main)
 
-## 1.
 Aplikacja napisana w javascript (platforma nodejs). Odpowiada za "wyklikiwanie" testów. 
 - Program komunikuje się ze sterownikiem - [selenium-webdriver](http://seleniumhq.github.io/selenium/docs/api/javascript/index.html) (wersja dla chrome), by za jego pomocą wydawać polecenia wykonywania okreslonych akcji w przegladarce (np wpisanie w pole tekstowe ciągu "1000", po czym kliknięcie przycisku "add" - dodanie elementów). 
-- Komunikacja ze sterownikiem przebiega asynchronicznie - wykorzystuję w tym celu mechanizm obietnic ([promises] (http://exploringjs.com/es6/ch_promises.html)).
-- W odpowiedzi sterownik selenium-webdriver przesyła logi (wykresy czasowe trwania operacji), uzyskiwane poprzez aktywację w sterowniku mechanizmu logowania ([chrome-tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool))
+- Komunikacja ze sterownikiem przebiega asynchronicznie - wykorzystuję w tym celu mechanizm obietnic ([promises](http://exploringjs.com/es6/ch_promises.html)).
+- W odpowiedzi sterownik selenium-webdriver przesyła logi (wykresy czasowe trwania operacji), uzyskiwane poprzez aktywację w sterowniku mechanizmu logowania ([chrome-tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool)).
 - Rezultaty w postaci wykresów  zapisuję w folderze "traces". 
 
 *uruchamianie:

@@ -1,11 +1,14 @@
-App1 
+Mgr-App1 
 ===============
 
 [powrót](https://github.com/krzysiekdz/mgr-main)
 
-Aplikacja napisana w javascript (platforma nodejs). Odpowiada za "wyklikiwanie" testów. Program komunikuje się ze sterownikiem - [selenium-webdriver](http://seleniumhq.github.io/selenium/docs/api/javascript/index.html), by za jego pomocą wydawać polecenia wykonywania okreslonych akcji w przegladarce (np wpisanie w pole tekstowe ciągu "1000", po czym kliknięcie przycisku add, potem clear, add, clear itd). Dodatkowo korzystam z mechanizmu
-obietnic (promises), gdy¿ komunikacja ze sterownikiem przebiega w sposob asynchroniczny. 
-Rezultaty w postaci logów zapisujê do plików w folderze traces (dziêki narzêdziu  chrome://tracing )
+## 1.
+Aplikacja napisana w javascript (platforma nodejs). Odpowiada za "wyklikiwanie" testów. 
+- Program komunikuje się ze sterownikiem - [selenium-webdriver](http://seleniumhq.github.io/selenium/docs/api/javascript/index.html) (wersja dla chrome), by za jego pomocą wydawać polecenia wykonywania okreslonych akcji w przegladarce (np wpisanie w pole tekstowe ciągu "1000", po czym kliknięcie przycisku "add" - dodanie elementów). 
+- Komunikacja ze sterownikiem przebiega asynchronicznie - wykorzystuję w tym celu mechanizm obietnic ([promises] (http://exploringjs.com/es6/ch_promises.html)).
+- W odpowiedzi sterownik selenium-webdriver przesyła logi (wykresy czasowe trwania operacji), uzyskiwane poprzez aktywację w sterowniku mechanizmu logowania ([chrome-tracing](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool))
+- Rezultaty w postaci wykresów  zapisuję w folderze "traces". 
 
 *uruchamianie:
 program nalezy uruchamiac bedac w katalgou nadrzêdnym (przy czym musi dzia³aæ serwer 

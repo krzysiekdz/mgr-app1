@@ -15,25 +15,29 @@ exports.initFetch = initFetch;
 function initFetch(driver, count) {
 	return  util.forPromises(0, util.config.WARMUP_ITERATIONS, function() {
 		return fetch(driver, count)
-			.then(core.clearTable(driver));
+			.then(() => core.clearTable(driver));
 	});
 }
 
 // ----------------- benchmark's functions
 
 exports.fetch = fetch;
-function fetch(driver, count) { 
+function fetch(driver, count, delayFlag) { 
 	var btn = bind.btn.fetch_1k;
 	if(count === 2000)
 		btn = bind.btn.fetch_2k;
 
-	setTimeout(function() {
-		driver.findElement(By.name(btn)).click();
-	}, testPeriod);
+	driver.findElement(By.name(btn)).click();
 	
-	return driver.wait(function() {//waiting until the page will render
-		return driver.findElement(By.xpath('//tbody/tr[' +  count +']')).then(el => {return true;}, ()=>{});
-	}, util.config.TIMEOUT);
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {//waiting until the page will render
+			console.log('fetch');
+			return driver.findElement(By.xpath('//tbody/tr[' +  count +']')).then(el => {return true;}, ()=>{});
+		}, util.config.TIMEOUT);
+	});
 }
 
 

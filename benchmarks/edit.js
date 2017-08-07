@@ -26,23 +26,30 @@ function initEdit(driver, count) {
 var key = 'k';
 
 exports.edit = edit;
-function edit(driver) {
+function edit(driver, delayFlag) {
 	var initialValue = 'string that cannot exist in original value';
+	
+	driver.findElement(By.name(bind.input.edit)).getAttribute('value')
+		.then((val)=> {
+			// console.log('val:', val); 
+			initialValue = val;
+		})
+		.then(() => driver.findElement(By.name(bind.input.edit)).sendKeys(key));
+	
 
-	setTimeout(function() {
-		driver.findElement(By.name(bind.input.edit)).getAttribute('value')
-			.then((val)=> {console.log('val:', val); initialValue = val;})
-			.then(() => driver.findElement(By.name(bind.input.edit)).sendKeys(key));
-	}, util.config.TEST_PERIOD);
-
-	return driver.wait(function() {
-		return driver.findElement(By.name(bind.input.edit)).getAttribute('value').then((val)=> {
-			if(val === initialValue + key) {
-				return true;
-			} 
-			return false;
-		});
-	}, util.config.TIMEOUT);
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {
+			return driver.findElement(By.name(bind.input.edit)).getAttribute('value').then((val)=> {
+				if(val === initialValue + key) {
+					return true;
+				} 
+				return false;
+			});
+		}, util.config.TIMEOUT);
+	});
 }
 
 

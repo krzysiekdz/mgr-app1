@@ -31,50 +31,50 @@ var memory = names.benchmarks.memory;
 
 
 exports.runBenchmark = runBenchmark;
-function runBenchmark(driver, benchmark, framework) {
+function runBenchmark(driver, benchmark, framework, frmObj, benchObj) {
 	switch(benchmark) {
 		//add cases:
 		case add._500.name : {
-			return addbench.add(driver, 500);
+			return addbench.add(driver, 500, true);
 		}
 		case add._1k.name : {
-			return addbench.add(driver, 1000);
+			return addbench.add(driver, 1000, true);
 		}
 		case add._2k.name : {
-			return addbench.add(driver, 2000);
+			return addbench.add(driver, 2000, true);
 		}
-		case add._500f_500.name : {
-			return addbench.addXtoY(driver, 'First', 500, 500);
-		}
-		case add._500f_2k.name : {
-			return addbench.addXtoY(driver, 'First', 500, 2000);
-		}
+
 		case add._500f_1k.name : {
-			return addbench.addXtoY(driver, 'First', 500, 1000);
-		}
-		case add._500m_1k.name : {
-			return addbench.addXtoY(driver, 'Mid', 500, 1000);
-		}
-		case add._500L_1k.name : {
-			return addbench.addXtoY(driver, 'Last', 500, 1000);
+			return addbench.addXtoY(driver, 'First', 500, 1000, true);
 		}
 		case add._500f_3k.name : {
-			return addbench.addXtoY(driver, 'First', 500, 3000);
+			return addbench.addXtoY(driver, 'First', 500, 3000, true);
 		}
-		case add._500f_4k.name : {
-			return addbench.addXtoY(driver, 'First', 500, 4000);
+
+		case add._500m_1k.name : {
+			return addbench.addXtoY(driver, 'Mid', 500, 1000, true);
 		}
+		case add._500L_1k.name : {
+			return addbench.addXtoY(driver, 'Last', 500, 1000, true);
+		}
+		case add._500m_3k.name : {
+			return addbench.addXtoY(driver, 'Mid', 500, 3000, true);
+		}
+		case add._500L_3k.name : {
+			return addbench.addXtoY(driver, 'Last', 500, 3000, true);
+		}
+
 		case add._1f_1k.name : {
-			return addbench.addXtoY(driver, 'First', 1, 1000);
+			return addbench.addXtoY(driver, 'First', 1, 1000, true);
 		}
 		case add._1L_1k.name : {
-			return addbench.addXtoY(driver, 'Last', 1, 1000);
+			return addbench.addXtoY(driver, 'Last', 1, 1000, true);
 		}
 		case add._2f_1k.name : {
-			return addbench.addXtoY(driver, 'First', 2, 1000);
+			return addbench.addXtoY(driver, 'First', 2, 1000, true);
 		}
 		case add._2L_1k.name : {
-			return addbench.addXtoY(driver, 'Last', 2, 1000);
+			return addbench.addXtoY(driver, 'Last', 2, 1000, true);
 		}
 
 		//clear cases:
@@ -99,38 +99,35 @@ function runBenchmark(driver, benchmark, framework) {
 		case update._2k.name : {
 			return update_bench.update(driver, 'First', 2000, 2000);
 		}
+
 		case update._500f_1_5k.name : {
 			return update_bench.update(driver, 'First', 500, 1500);
 		}
+		case update._500f_3_5k.name : {
+			return update_bench.update(driver, 'First', 500, 3500);
+		}
+
 		case update._500m_1_5k.name : {
 			return update_bench.update(driver, 'Mid', 500, 1500);
 		}
 		case update._500L_1_5k.name : {
 			return update_bench.update(driver, 'Last', 500, 1500);
 		}
-		case update._500f_1k.name : {
-			return update_bench.update(driver, 'First', 500, 1000);
+		case update._500m_3_5k.name : {
+			return update_bench.update(driver, 'Mid', 500, 3500);
 		}
-		case update._500f_2k.name : {
-			return update_bench.update(driver, 'First', 500, 2000);
+		case update._500L_3_5k.name : {
+			return update_bench.update(driver, 'Last', 500, 3500);
 		}
+		
 		case update._1f_1k.name : {
 			return update_bench.update(driver, 'First', 1, 1000);
 		}
 		case update._2f_1k.name : {
 			return update_bench.update(driver, 'First', 2, 1000);
 		}
-		case update._1f_2k.name : {
-			return update_bench.update(driver, 'First', 1, 2000);
-		}
-		case update._1L_2k.name : {
-			return update_bench.update(driver, 'Last', 1, 2000);
-		}
-		case update._500f_3k.name : {
-			return update_bench.update(driver, 'First', 500, 3000);
-		}
-		case update._500f_4k.name : {
-			return update_bench.update(driver, 'First', 500, 4000);
+		case update._1L_1k.name : {
+			return update_bench.update(driver, 'Last', 1, 1000);
 		}
 
 		case update.partial_evr2_1k.name : {
@@ -154,38 +151,35 @@ function runBenchmark(driver, benchmark, framework) {
 		case replace._2k.name : {
 			return repl_bench.replace(driver, 'First', 2000, 2000);
 		}
+
 		case replace._500f_1_5k.name : {
 			return repl_bench.replace(driver, 'First', 500, 1500);
 		}
+		case replace._500f_3_5k.name : {
+			return repl_bench.replace(driver, 'First', 500, 3500);
+		}
+
 		case replace._500m_1_5k.name : {
 			return repl_bench.replace(driver, 'Mid', 500, 1500);
 		}
 		case replace._500L_1_5k.name : {
 			return repl_bench.replace(driver, 'Last', 500, 1500);
 		}
-		case replace._500f_1k.name : {
-			return repl_bench.replace(driver, 'First', 500, 1000);
+		case replace._500m_3_5k.name : {
+			return repl_bench.replace(driver, 'Mid', 500, 3500);
 		}
-		case replace._500f_2k.name : {
-			return repl_bench.replace(driver, 'First', 500, 2000);
+		case replace._500L_3_5k.name : {
+			return repl_bench.replace(driver, 'Last', 500, 3500);
 		}
+
 		case replace._1f_1k.name : {
 			return repl_bench.replace(driver, 'First', 1, 1000);
 		}
 		case replace._2f_1k.name : {
 			return repl_bench.replace(driver, 'First', 2, 1000);
 		}
-		case replace._1f_2k.name : {
-			return repl_bench.replace(driver, 'First', 1, 2000);
-		}
-		case replace._1L_2k.name : {
-			return repl_bench.replace(driver, 'Last', 1, 2000);
-		}
-		case replace._500f_3k.name : {
-			return repl_bench.replace(driver, 'First', 500, 3000);
-		}
-		case replace._500f_4k.name : {
-			return repl_bench.replace(driver, 'First', 500, 4000);
+		case replace._1L_1k.name : {
+			return repl_bench.replace(driver, 'Last', 1, 1000);
 		}
 
 
@@ -210,7 +204,7 @@ function runBenchmark(driver, benchmark, framework) {
 
 		//load case:
 		case load._.name : {
-			return load_bench.load(driver, framework);
+			return load_bench.load(driver, frmObj);
 		}
 
 		//input cases:
@@ -290,7 +284,7 @@ function runBenchmark(driver, benchmark, framework) {
 
 		//memory cases:
 		case memory._load.name : {
-			return memory_bench.memLoad(driver, framework);
+			return memory_bench.memLoad(driver, frmObj);
 		}
 		case memory._add_1k.name : {
 			return memory_bench.memAdd(driver, 1000);

@@ -24,7 +24,7 @@ function initSwap(driver, method, count) {
 // ----------------- benchmark's functions
 
 exports.swap = swap;
-function swap(driver, method, count) { //method= "First" | "Mid" | "Last"
+function swap(driver, method, count, delayFlag) { //method= "First" | "Mid" | "Last"
 	var btn = bind.btn.swapFirst;
 	var swapped_el = 2; 
 
@@ -37,25 +37,25 @@ function swap(driver, method, count) { //method= "First" | "Mid" | "Last"
 		swapped_el = count;
 	}
 
-	setTimeout(function() {
-		driver.findElement(By.name(btn)).click();
-	}, testPeriod);
+	var html_before; //html of last_element must be diffrent before click and after it (at least at ID position)
+	driver.wait(function() {
+		return driver.findElement(By.xpath('//tbody/tr[' +  swapped_el +']'))
+			.getAttribute('innerHTML')
+			.then(html => {html_before = html; return true;}, (err)=>{console.log('error:', err)})
+	}) 
+	.then(()=>{ driver.findElement(By.name(btn)).click(); });
 	
 	
-	var firstCall = true, html_before; //html of last_element must be diffrent before click and after it (at least at ID position)
-
-	return driver.wait(function() {//waiting until the page will render
-		if(firstCall) {
-			firstCall = false;
-			return driver.findElement(By.xpath('//tbody/tr[' +  swapped_el +']'))
-				.getAttribute('innerHTML')
-				.then(html => {html_before = html; return false;}, (err)=>{console.log('error:', err)})
-		} else {
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {//waiting until the page will render
 			return driver.findElement(By.xpath('//tbody/tr[' +  swapped_el +']'))
 				.getAttribute('innerHTML')
 				.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)})
-		}
-	}, util.config.TIMEOUT);
+		}, util.config.TIMEOUT)
+	});
 }
 
 

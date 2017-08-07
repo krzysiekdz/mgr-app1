@@ -11,8 +11,8 @@ function runAll(frameworks, benchmarks) {
 	frameworks.forEach(frm => {
 		benchmarks.forEach(bench => {
 			tests.push({
-				framework: frm.name,
-				benchmark: bench.name,
+				framework: frm,
+				benchmark: bench,
 			});
 		});
 	});
@@ -23,17 +23,18 @@ function runAll(frameworks, benchmarks) {
 		let bench = tests[i].benchmark;
 
 		return util.forPromises(0, util.config.TEST_COUNT, function() {//for every bench repeat it TEST_COUNT times
-			return driver.get('http://localhost:8080/' + frm + '/public') //must return some promise - driver returns a promise so its ok
-				.then(() => init.initBenchmark(driver, bench, frm))
+			return driver.get(frm.path) //must return some promise - driver returns a promise so its ok
+				.then(() => init.initBenchmark(driver, bench.name, frm.name, frm, bench))
 				.then(() => logs.clear(driver))
-				.then(() => run.runBenchmark(driver, bench, frm))
-				.then(() => logs.read(driver, frm, bench))
+				.then(() => run.runBenchmark(driver, bench.name, frm.name, frm, bench))
+				.then(() => logs.read(driver, frm.name, bench.name))
 				;
 		})
 		.then(() => driver.quit())
+		.then(() => logs.appendTraces())
 		;
 	})
-	.then(() => logs.appendTraces())
+
 	;
 }
 

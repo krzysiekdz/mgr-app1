@@ -2,13 +2,34 @@ var webdriver = require('selenium-webdriver');
 var fs = require('fs');
 var path = require('path');
 
+// function LogCache() {
+// 	this.cache = [];
+// }
+// LogCache.prototype.find =  function(frm, bench) {
+// 	for(var i = 0; i < logCache.length; i++) {
+// 		if(logCache[i].framework === frm && logCache[i].benchmark === bench)
+// 			return logCache[i];
+// 	}
+// }
+// LogCache.prototype.push = function(log) {
+// 	this.cache.push(log);
+// }
+// LogCache.prototype.get = function(i) {
+// 	return this.cache[i];
+// }
+// LogCache.prototype.length = function() {
+// 	return this.cache.length;
+// }
+
+
 var logCache = [];
-logCache.find = function(frm, bench) {
+logCache.find =  function(frm, bench) {
 	for(var i = 0; i < logCache.length; i++) {
 		if(logCache[i].framework === frm && logCache[i].benchmark === bench)
 			return logCache[i];
 	}
 }
+
 var trash = [];
 
 
@@ -95,6 +116,7 @@ function appendTraces() { //appending traces
 			});
 		})(fileName, log);
 	}
+	logCache.splice(0, logCache.length);
 }
 
 function writeFile(fn, obj) {

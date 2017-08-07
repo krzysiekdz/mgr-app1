@@ -26,20 +26,24 @@ function initRemove(driver, count, method) {
 // ----------------- benchmark's functions
 
 exports.remove = remove;
-function remove(driver, count, method) {
+function remove(driver, count, method, delayFlag) {
 	var element = 1;
 	if(method === 'Last') {
 		element = count;
 	}
 	var xpathEl = '//tbody/tr[' + element + ']/td[6]/button'; //button remove
 	
-	setTimeout(function() {
-		driver.findElement(By.xpath(xpathEl)).click();	
-	}, util.config.TEST_PERIOD);
+	driver.findElement(By.xpath(xpathEl)).click();	
 	
-	return driver.wait(function() {
-		return driver.findElements(By.xpath('//tbody/tr'))
-			.then(els => els.length === count-1 );
-	}, util.config.TIMEOUT);
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {
+			return driver.findElements(By.xpath('//tbody/tr'))
+				.then(els => els.length === count-1 );
+		}, util.config.TIMEOUT);
+	});
+	
 }
 

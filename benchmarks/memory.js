@@ -14,8 +14,8 @@ var testPeriod = util.config.TEST_PERIOD;
 //----------------------- init functions
 
 exports.initMemLoad = initMemLoad;
-function initMemLoad(driver, framework) {
-	return load.initLoad(driver, framework);
+function initMemLoad(driver, frmObj) {
+	return load.initLoad(driver, frmObj);
 }
 
 exports.initMemAdd = initMemAdd;
@@ -26,13 +26,19 @@ function initMemAdd(driver, count) {
 // ----------------- benchmark's functions
 
 exports.memLoad = memLoad;
-function memLoad(driver, framework) { 
-	return load.load(driver, framework)
-		.then(() => driver.executeScript('window.gc();'));
+function memLoad(driver, frmObj) { 
+	return load.load(driver, frmObj, true)
+		.then(() => driver.executeScript('window.gc();'))
+		.then(() => new Promise((resolve, reject) => {
+			setTimeout(() => resolve(), util.config.DELAY);
+		}) );
 }
 
 exports.memAdd = memAdd;
 function memAdd(driver, count) { 
-	return add.add(driver, count)
-		.then(() => driver.executeScript('window.gc();'));
+	return add.add(driver, count, true)
+		.then(() => driver.executeScript('window.gc();'))
+		.then(() => new Promise((resolve, reject) => {
+			setTimeout(() => resolve(), util.config.DELAY)
+		}) );
 }

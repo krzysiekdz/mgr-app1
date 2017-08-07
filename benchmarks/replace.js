@@ -14,10 +14,10 @@ var testPeriod = util.config.TEST_PERIOD;
 exports.initReplace = initReplace;
 function initReplace(driver, method, x, y) {
 	return core.initField(driver, bind.input.replace, x)
-		.then(() => core.initElements(driver, y))
+		.then(() => core.initElements(driver, y, true))
 		.then(() => {//warmup iterations
 			return util.forPromises(0, util.config.WARMUP_ITERATIONS, function() {
-				return replace(driver, method, x, y);
+				return replace(driver, method, x, y, true);
 			});
 		});
 }
@@ -25,7 +25,7 @@ function initReplace(driver, method, x, y) {
 // ----------------- benchmark's functions
 
 exports.replace = replace;
-function replace(driver, method, x, y) { //method= "First" | "Mid" | "Last"
+function replace(driver, method, x, y, delayFlag) { //method= "First" | "Mid" | "Last"
 	var btn = bind.btn.replaceFirst;
 	var last_element = x; //for First metod
 
@@ -38,25 +38,55 @@ function replace(driver, method, x, y) { //method= "First" | "Mid" | "Last"
 		last_element = y;
 	}
 
-	setTimeout(function() {
-		driver.findElement(By.name(btn)).click();
-	}, testPeriod);
-	
-	
-	var firstCall = true, html_before; //html of last_element must be diffrent before click and after it (at least at ID position)
+	delayFlag = true;
+	if(!delayFlag) {
+		setTimeout(function() {
+			driver.findElement(By.name(btn)).click();
+		}, testPeriod);
+		
+		
+		var firstCall = true, html_before; //html of last_element must be diffrent before click and after it (at least at ID position)
 
-	return driver.wait(function() {//waiting until the page will render
-		if(firstCall) {
-			firstCall = false;
-			return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
-				.getAttribute('innerHTML')
-				.then(html => {html_before = html; return false;}, (err)=>{console.log('error:', err)})
-		} else {
-			return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
-				.getAttribute('innerHTML')
-				.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)})
-		}
-	}, util.config.TIMEOUT);
+		return driver.wait(function() {//waiting until the page will render
+			if(firstCall) {
+				firstCall = false;
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => {html_before = html; return false;}, (err)=>{console.log('error:', err)})
+			} else {
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)})
+			}
+		}, util.config.TIMEOUT);
+	} else {
+		var html_before;
+
+		setTimeout(function() {
+			driver.wait(function() {
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => {html_before = html; return true;}, (err)=>{console.log('error:', err)})
+			})
+			.then(() => {
+				driver.findElement(By.name(btn)).click();
+			});
+			
+		}, testPeriod);
+		
+
+		var delayTime = (delayFlag)? util.config.DELAY : 0;
+		return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+		.then( () => {
+			return driver.wait(function() {//waiting until the page will render
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)})
+			}, util.config.TIMEOUT);
+		});
+	}
+
+	
 }
 
 

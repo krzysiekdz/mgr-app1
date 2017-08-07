@@ -25,38 +25,44 @@ function initSelect(driver, count, method) {
 // ----------------- benchmark's functions
 
 exports.select = select;
-function select(driver, count, method) {
+function select(driver, count, method, delayFlag) {
 	var element = 1;
 	if(method === 'Last') {
 		element = count;
 	}
 	var xpathEl = '//tbody/tr[' + element + ']';
 	
-	setTimeout(function() {
-		driver.findElement(By.xpath(xpathEl)).click();	
-	}, util.config.TEST_PERIOD);
+	driver.findElement(By.xpath(xpathEl)).click();	
 	
-	return driver.wait(function() {
-		return driver.findElement(By.xpath(xpathEl))
-			.getAttribute('class')
-			.then(cl => cl === 'selected');
-	}, util.config.TIMEOUT);
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {
+			return driver.findElement(By.xpath(xpathEl))
+				.getAttribute('class')
+				.then(cl => { return cl.trim() === 'selected'});
+		}, util.config.TIMEOUT);
+	});
 }
 
-function unselect(driver, count, method) {
+function unselect(driver, count, method, delayFlag) {
 	var element = 1;
 	if(method === 'Last') {
 		element = count;
 	}
 	var xpathEl = '//tbody/tr[' + element + ']';
 	
-	setTimeout(function() {
-		driver.findElement(By.xpath(xpathEl)).click();	
-	}, util.config.TEST_PERIOD);
+	driver.findElement(By.xpath(xpathEl)).click();	
 	
-	return driver.wait(function() {
-		return driver.findElement(By.xpath(xpathEl))
-			.getAttribute('class')
-			.then(cl => cl === '' );
-	}, util.config.TIMEOUT);
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {
+			return driver.findElement(By.xpath(xpathEl))
+				.getAttribute('class')
+				.then(cl => cl === '' );
+		}, util.config.TIMEOUT);
+	});
 }

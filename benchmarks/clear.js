@@ -36,7 +36,7 @@ function initElements(driver, value) {
 
 exports.clear = clear;
 function clear(driver) {
-	return core.clearTableDelayed(driver);
+	return core.clearTable(driver, true);
 }
 
 

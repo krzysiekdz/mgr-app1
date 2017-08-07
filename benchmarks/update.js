@@ -14,10 +14,10 @@ var testPeriod = util.config.TEST_PERIOD;
 exports.initUpdate = initUpdate;
 function initUpdate(driver, method, x, y) {
 	return core.initField(driver, bind.input.update, x)
-		.then(() => core.initElements(driver, y))
+		.then(() => core.initElements(driver, y, true))
 		.then(() => {//warmup iterations
 			return util.forPromises(0, util.config.WARMUP_ITERATIONS, function() {
-				return update(driver, method, x, y);
+				return update(driver, method, x, y, true);
 			});
 		});
 }
@@ -25,10 +25,10 @@ function initUpdate(driver, method, x, y) {
 exports.initPartialUpdate = initPartialUpdate;
 function initPartialUpdate(driver, x, y) {
 	return core.initField(driver, bind.input.updateEvery, x)
-		.then(() => core.initElements(driver, y))
+		.then(() => core.initElements(driver, y, true))
 		.then(() => {//warmup iterations
 			return util.forPromises(0, util.config.WARMUP_ITERATIONS, function() {
-				return partialUpdate(driver, x, y);
+				return partialUpdate(driver, x, y, true);
 			});
 		});
 }
@@ -38,7 +38,7 @@ function initPartialUpdate(driver, x, y) {
 // ----------------- benchmark's functions
 
 exports.update = update;
-function update(driver, method, x, y) { //method= "First" | "Mid" | "Last"
+function update(driver, method, x, y, delayFlag) { //method= "First" | "Mid" | "Last"
 	var btn = bind.btn.updateFirst;
 	var last_element = x; //for First metod
 
@@ -51,50 +51,102 @@ function update(driver, method, x, y) { //method= "First" | "Mid" | "Last"
 		last_element = y;
 	}
 
-	setTimeout(function() {
-		driver.findElement(By.name(btn)).click();
-	}, testPeriod);
-	
-	
-	var firstCall = true, html_before; //html of last_element must be diffrent before click and after it (at least at ID position)
+	delayFlag = true;
+	if(!delayFlag) {
+		setTimeout(function() {
+			driver.findElement(By.name(btn)).click();
+		}, testPeriod);
+		
+		
+		var firstCall = true, html_before; //html of last_element must be diffrent before click and after it (at least at ID position)
 
-	return driver.wait(function() {//waiting until the page will render
-		if(firstCall) {
-			firstCall = false;
-			return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
-				.getAttribute('innerHTML')
-				.then(html => {html_before = html; return false;}, (err)=>{console.log('error:', err)})
-		} else {
-			return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
-				.getAttribute('innerHTML')
-				.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)})
-		}
-	}, util.config.TIMEOUT);
+		return driver.wait(function() {//waiting until the page will render
+			if(firstCall) {
+				firstCall = false;
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => {html_before = html; return false;}, (err)=>{console.log('error:', err)})
+			} else {
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)})
+			}
+		}, util.config.TIMEOUT);
+	} else {
+		var html_before;
+
+		setTimeout(function() {
+			driver.wait(function() {
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => {html_before = html; return true;}, (err)=>{console.log('error:', err)})
+			})
+			.then(()=> {driver.findElement(By.name(btn)).click();});
+		}, testPeriod);
+
+
+		var delayTime = (delayFlag)? util.config.DELAY : 0;
+		return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+		.then( () => {
+			return driver.wait(function() {//waiting until the page will render
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)});
+			}, util.config.TIMEOUT);
+		});
+	}
 }
 
 exports.partialUpdate = partialUpdate;
-function partialUpdate(driver, x, y) {
+function partialUpdate(driver, x, y, delayFlag) {
 	var last_element = y+1 - x;
 
-	setTimeout(function() {
-		driver.findElement(By.name(bind.btn.updateEvery)).click();
-	}, testPeriod);
-	
-	var firstCall = true, html_before; //html of last_element must be diffrent before click and after it (at least at ID position)
+	delayFlag = true;
+	if(!delayFlag) {
+		setTimeout(function() {
+			driver.findElement(By.name(bind.btn.updateEvery)).click();
+		}, testPeriod);
+		
+		var firstCall = true, html_before; //html of last_element must be diffrent before click and after it (at least at ID position)
 
-	return driver.wait(function() {//waiting until the page will render
-		if(firstCall) {
-			firstCall = false;
-			return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
-				.getAttribute('innerHTML')
-				.then(html => {html_before = html; return false;}, (err)=>{console.log('error:', err)})
-		} else {
-			return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
-				.getAttribute('innerHTML')
-				.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)})
-		}
-	}, util.config.TIMEOUT);
+		return driver.wait(function() {//waiting until the page will render
+			if(firstCall) {
+				firstCall = false;
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => {html_before = html; return false;}, (err)=>{console.log('error:', err)})
+			} else {
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)})
+			}
+		}, util.config.TIMEOUT);
+	} else {
+		var html_before;
+
+		setTimeout(function() {
+			driver.wait(function() {
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => {html_before = html; return true;}, (err)=>{console.log('error:', err)})
+			})
+			.then(()=>{driver.findElement(By.name(bind.btn.updateEvery)).click();});
+		}, testPeriod);
+		
+		var delayTime = (delayFlag)? util.config.DELAY : 0;
+		return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+		.then( () => {
+			return driver.wait(function() {//waiting until the page will render
+				return driver.findElement(By.xpath('//tbody/tr[' +  last_element +']'))
+					.getAttribute('innerHTML')
+					.then(html => { return (html_before === html)? false:true; }, (err)=>{console.log('error:', err)})
+			}, util.config.TIMEOUT);
+		});
+	}
+	
 }
 
+
+//spr czemu bierze mi gorszy czas scr dla angular2
 
 

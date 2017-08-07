@@ -27,24 +27,27 @@ var repeats = 0;
 var key = 'k';
 
 exports.input = input;
-function input(driver, clearState) {
+function input(driver, clearState, delayFlag) {
 	repeats++;
 
-	setTimeout(function() {
-		driver.findElement(By.name(bind.input.input)).sendKeys(key);
-	}, util.config.TEST_PERIOD);
-
-	return driver.wait(function() {
-		return driver.findElement(By.name(bind.input.input)).getAttribute('value').then((val)=> {
-			if(val === repeatKeyString(key, repeats)) {
-				if(clearState) {
-					repeats = 0;
-				}
-				return true;
-			} 
-			return false;
-		});
-	}, util.config.TIMEOUT);
+	driver.findElement(By.name(bind.input.input)).sendKeys(key);
+	
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {
+			return driver.findElement(By.name(bind.input.input)).getAttribute('value').then((val)=> {
+				if(val === repeatKeyString(key, repeats)) {
+					if(clearState) {
+						repeats = 0;
+					}
+					return true;
+				} 
+				return false;
+			});
+		}, util.config.TIMEOUT);
+	});
 }
 
 function repeatKeyString(k, r) {

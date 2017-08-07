@@ -27,27 +27,33 @@ function initSearch(driver, count, key) {
 
 
 exports.search = search;
-function search(driver, key) {
-	setTimeout(function() {
-		driver.findElement(By.name(bind.input.search)).sendKeys(key);
-	}, testPeriod);
-
-	return driver.wait(function() {
-		return driver.findElement(By.name(bind.input.search)).getAttribute('value')
-			.then((val)=> val === key);
-	}, util.config.TIMEOUT);
+function search(driver, key, delayFlag) {
+	driver.findElement(By.name(bind.input.search)).sendKeys(key);
+	
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {
+			return driver.findElement(By.name(bind.input.search)).getAttribute('value')
+				.then((val)=> val === key);
+		}, util.config.TIMEOUT);
+	});
 }
 
 
-function removeKey(driver) {
-	setTimeout(function() {
-		driver.findElement(By.name(bind.input.search)).sendKeys(Key.BACK_SPACE);
-	}, testPeriod);
+function removeKey(driver, delayFlag) {
+	driver.findElement(By.name(bind.input.search)).sendKeys(Key.BACK_SPACE);
 
-	return driver.wait(function() {
-		return driver.findElement(By.name(bind.input.search)).getAttribute('value')
-			.then((val)=> val === '');
-	}, util.config.TIMEOUT);
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {
+			return driver.findElement(By.name(bind.input.search)).getAttribute('value')
+				.then((val)=> val === '');
+		}, util.config.TIMEOUT);
+	});
 }
 
 

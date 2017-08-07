@@ -25,26 +25,33 @@ function initFilter(driver, count) {
 // ----------------- benchmark's functions
 
 exports.filter = filter;
-function filter(driver) {
-	setTimeout(function() {
-		driver.findElement(By.name(bind.checkbox.filter)).click();	
-	}, util.config.TEST_PERIOD);
+function filter(driver, delayFlag) {
+	driver.findElement(By.name(bind.checkbox.filter)).click();	
 	
-	return driver.wait(function() {
-		return driver.findElement(By.xpath('//tbody'))
-			.getAttribute('class')
-			.then(cl => cl === 'filtered');
-	}, util.config.TIMEOUT);
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {
+			return driver.findElement(By.xpath('//tbody'))
+				.getAttribute('class')
+				.then(cl => cl === 'filtered');
+		}, util.config.TIMEOUT);
+	});
 }
 
-function unfilter(driver) {
-	setTimeout(function() {
-		driver.findElement(By.name(bind.checkbox.filter)).click();	
-	}, util.config.TEST_PERIOD);
+function unfilter(driver, delayFlag) {
 	
-	return driver.wait(function() {
-		return driver.findElement(By.xpath('//tbody'))
-			.getAttribute('class')
-			.then(cl => cl === '');
-	}, util.config.TIMEOUT);
+	driver.findElement(By.name(bind.checkbox.filter)).click();	
+	
+	delayFlag = true;
+	var delayTime = (delayFlag)? util.config.DELAY : 0;
+	return  new Promise((resolve, reject) => {setTimeout(function() {resolve();}, delayTime)})//delaying 
+	.then( () => {
+		return driver.wait(function() {
+			return driver.findElement(By.xpath('//tbody'))
+				.getAttribute('class')
+				.then(cl => cl === '');
+		}, util.config.TIMEOUT);
+	});
 }
